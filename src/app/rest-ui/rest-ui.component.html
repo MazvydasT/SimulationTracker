@@ -1,0 +1,115 @@
+<mat-sidenav-container>
+    <mat-sidenav-content fxLayout="column">
+        <mat-form-field>
+            <input matInput placeholder="Base URL" [formControl]="baseURLControl">
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="REST query" [formControl]="restQueryControl">
+        </mat-form-field>
+
+        <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="16px">
+            <div>
+                <mat-label>Send method:</mat-label>
+                <mat-radio-group fxLayout="column" name="sendMehod" [formControl]="sendMethodControl">
+                    <mat-radio-button *ngFor="let sendMehod of sendMethods" [value]="sendMehod">
+                        {{sendMehod}}
+                    </mat-radio-button>
+                </mat-radio-group>
+            </div>
+
+            <div>
+                <mat-label><i>Accept</i> header:</mat-label>
+                <mat-radio-group fxLayout="column" name="acceptHeader" [formControl]="acceptHeaderControl">
+                    <mat-radio-button *ngFor="let headerValue of headerValues" [value]="headerValue.value">
+                        {{headerValue.text}}
+                    </mat-radio-button>
+                </mat-radio-group>
+            </div>
+
+            <div [class.hidden]="sendMethodControl.value === 'GET' || sendMethodControl.value === 'DELETE'">
+                <mat-label><i>Content type</i> header:</mat-label>
+                <mat-radio-group fxLayout="column" name="acceptHeader" [formControl]="contentTypeHeaderControl">
+                    <mat-radio-button *ngFor="let headerValue of headerValues" [value]="headerValue.value">
+                        {{headerValue.text}}
+                    </mat-radio-button>
+                </mat-radio-group>
+            </div>
+
+            <mat-form-field >
+                <!--<input matInput cdkTextareaAutosize [formControl]="postDataControl" placeholder="Data">-->
+                <textarea matInput cdkTextareaAutosize [formControl]="postDataControl" placeholder="Data"></textarea>
+                <mat-error *ngIf="postDataControl.value">Test</mat-error>
+                <!--<ng-container *ngIf="postDataObjectObservable | async as postDataObject">
+                    <mat-error *ngIf="isString(postDataObject)">{{postDataObject}}</mat-error>
+                </ng-container>-->
+            </mat-form-field>
+        </div>
+
+        <!--<div class="wrapper">
+            <p class="nowrap">
+                Send method:
+                <ng-container *ngFor="let sendMehod of sendMethods">
+                    <div>
+                        <input type="radio" name="sendMehod" value="{{sendMehod}}" [formControl]="sendMethodControl">
+                        <label>{{sendMehod}}</label>
+                    </div>
+                </ng-container>
+            </p>
+
+            <p class="nowrap">
+                <i>Accept</i> header:
+                <ng-container *ngFor="let headerValue of headerValues">
+                    <div>
+                        <input type="radio" name="acceptHeader" value="{{headerValue.value}}"
+                            [formControl]="acceptHeaderControl">
+                        <label>{{headerValue.text}}</label>
+                    </div>
+                </ng-container>
+            </p>
+
+            <p class="nowrap"
+                [class.hidden]="sendMethodControl.value === 'GET' || sendMethodControl.value === 'DELETE'">
+                <i>Content type</i> header:
+                <ng-container *ngFor="let headerValue of headerValues">
+                    <div>
+                        <input type="radio" name="contentTypeHeader" value="{{headerValue.value}}"
+                            [formControl]="contentTypeHeaderControl">
+                        <label>{{headerValue.text}}</label>
+                    </div>
+                </ng-container>
+            </p>
+
+            <p class="flex" [class.hidden]="sendMethodControl.value === 'GET' || sendMethodControl.value === 'DELETE'">
+                <span class="block" *ngIf="!isString(postDataObjectObservable | async)">Data:</span>
+
+                <ng-container *ngIf="postDataObjectObservable | async as postDataObject">
+                    <span class="block" *ngIf="isString(postDataObject)">Error: {{postDataObject}}</span>
+                </ng-container>
+
+                <textarea class="block" [formControl]="postDataControl"></textarea>
+            </p>
+        </div>-->
+
+        <p>Query object:</p>
+        <code>{{requestObjectObservable | async | json}}</code>
+
+        <p>
+            <button (click)="sendObservable.next()">Send</button>
+        </p>
+
+        <ng-container *ngIf="queriesObservable | async as queries">
+            <p>Queries:</p>
+            <ul>
+                <li class="wrapper" *ngFor="let query of queries">
+                    <div class="flex">
+                        <code>{{query.request}}</code>
+                    </div>
+                    <div class="flex">
+                        <code>{{query.response | async}}</code>
+                    </div>
+                </li>
+            </ul>
+        </ng-container>
+    </mat-sidenav-content>
+</mat-sidenav-container>
