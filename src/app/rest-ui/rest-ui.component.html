@@ -1,14 +1,23 @@
 <mat-sidenav-container>
     <mat-sidenav-content fxLayout="column">
-        <mat-form-field>
-            <input matInput placeholder="Base URL" [formControl]="baseURLControl">
+        <mat-form-field appearance="standard">
+            <mat-label>Base URL</mat-label>
+            <input matInput placeholder="../../" [formControl]="baseURLControl">
         </mat-form-field>
 
-        <mat-form-field>
-            <input matInput placeholder="REST query" [formControl]="restQueryControl">
+        <mat-form-field appearance="standard">
+            <mat-label>REST query</mat-label>
+            <input matInput placeholder="_api/web/lists/getbytitle('Programs')/items" [formControl]="restQueryControl">
         </mat-form-field>
 
-        <div fxLayout="row" fxLayoutAlign="space-between" fxLayoutGap="16px">
+        <div fxLayout="row" fxLayoutAlign="space-between start" fxLayoutGap="16px">
+            <mat-form-field fxFlex appearance="standard">
+                <mat-label>Body or params</mat-label>
+                <textarea matInput cdkTextareaAutosize [errorStateMatcher]="postDataControlErrorStateMatcher"
+                    [formControl]="postDataControl" placeholder="{ title: 'Some title', value:1 }"></textarea>
+                <mat-error>{{postDataControl.getError('dataObjectError')}}</mat-error>
+            </mat-form-field>
+
             <div>
                 <mat-label>Send method:</mat-label>
                 <mat-radio-group fxLayout="column" name="sendMehod" [formControl]="sendMethodControl">
@@ -35,15 +44,6 @@
                     </mat-radio-button>
                 </mat-radio-group>
             </div>
-
-            <mat-form-field >
-                <!--<input matInput cdkTextareaAutosize [formControl]="postDataControl" placeholder="Data">-->
-                <textarea matInput cdkTextareaAutosize [formControl]="postDataControl" placeholder="Data"></textarea>
-                <mat-error *ngIf="postDataControl.value">Test</mat-error>
-                <!--<ng-container *ngIf="postDataObjectObservable | async as postDataObject">
-                    <mat-error *ngIf="isString(postDataObject)">{{postDataObject}}</mat-error>
-                </ng-container>-->
-            </mat-form-field>
         </div>
 
         <!--<div class="wrapper">
